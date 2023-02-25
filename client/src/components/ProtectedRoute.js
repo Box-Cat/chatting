@@ -1,11 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { GetCurrentUser } from '../apicalls/users'
+import { GetAllUsers, GetCurrentUser } from '../apicalls/users'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { HideLoader, ShowLoader } from '../redux/loaderSlice'
-import { SetUser } from '../redux/userSlice'
+import { SetUser, SetAllUsers } from '../redux/userSlice'
 
 const ProtectedRoute = ({ children }) => {
   const {user} = useSelector(state => state.userReducer)
@@ -15,10 +15,13 @@ const ProtectedRoute = ({ children }) => {
     try {
       dispatch(ShowLoader())
       const response = await GetCurrentUser();
+      const allUsersResponse = await GetAllUsers();
       dispatch(HideLoader())
       if (response.success) {
         dispatch(SetUser(response.data));
+        dispatch(SetAllUsers(allUsersResponse.data));
       } else {
+        alert("Hello")
         dispatch(HideLoader())
         toast.error(response.message);
         navigate('/login')       
@@ -32,6 +35,8 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getCurrentUser();
+    }else{
+      navigate("/login");
     }
   }, [])
 
@@ -43,9 +48,16 @@ const ProtectedRoute = ({ children }) => {
             <i className="ri-message-3-line text-2xl"></i>
             <h1 className="text primary text-2xl uppercase font-bold">Chat</h1>
         </div>
-        <div className='flex gap-1 text-ml'>
-            <i class="ri-shield-user-line"></i>
+        <div className='flex gap-1 text-ml items-center'>
+            <i className="ri-shield-user-line"></i>
             <h1 className='underline'>{user?.name}</h1>
+
+            <i className="ri-logout-circle-r-line ml-5 text-xl cursor-pointer"
+              onClick={()=>{
+                localStorage.removeItem("token");
+                navigate('/login');
+              }}
+            ></i>
         </div>
       </div>
 
