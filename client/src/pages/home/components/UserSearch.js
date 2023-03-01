@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-
 function UserSearch({searchKey, setSearchKey}) {
     return(
     <div className="relative">

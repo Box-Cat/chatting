@@ -1,11 +1,12 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { GetAllUsers, GetCurrentUser } from '../apicalls/users'
+import { GetAllChats } from '../apicalls/chats'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { HideLoader, ShowLoader } from '../redux/loaderSlice'
-import { SetUser, SetAllUsers } from '../redux/userSlice'
+import { SetUser, SetAllUsers, SetAllChats } from '../redux/userSlice'
 
 const ProtectedRoute = ({ children }) => {
   const {user} = useSelector(state => state.userReducer)
@@ -16,12 +17,13 @@ const ProtectedRoute = ({ children }) => {
       dispatch(ShowLoader())
       const response = await GetCurrentUser();
       const allUsersResponse = await GetAllUsers();
+      const allChatsResponse = await GetAllChats();
       dispatch(HideLoader())
       if (response.success) {
         dispatch(SetUser(response.data));
         dispatch(SetAllUsers(allUsersResponse.data));
+        dispatch(SetAllChats(allChatsResponse.data));
       } else {
-        alert("Hello")
         dispatch(HideLoader())
         toast.error(response.message);
         navigate('/login')       
