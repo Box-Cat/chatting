@@ -58,21 +58,21 @@ function UsersList({ searchKey }) {
                 .map((userObj) => {
                     return (
                         <div
-                            className={`shadow-sm border p-3 rounded-xl bg-white flex justify-between items-center cursor-pointer
+                            className={`shadow-sm border p-3 rounded-xl bg-red-500 flex justify-between items-center cursor-pointer
                                 ${getIsSelectedChatOrNot(userObj) && 'border-primary border-2'}
                             `}
                             key={userObj._id}
                             onClick={() => openChat(userObj._id)}
                         >
-                            <div className='flex gap-5 item-center'>
-                                {userObj.profilePic && (
+                            <div className='flex gap-5 item-center bg-blue-500'>
+                                {userObj.profilePic && ( //profile 사진이 있으면
                                     <img
                                         src={userObj.profilePic}
                                         alt="profile pic"
                                         className='w-10 h-10 rounded-full'
                                     />
                                 )}
-                                {userObj.profilePic && (
+                                {!userObj.profilePic && ( //profile 사진이 없으면
                                     <div className='bg-gray-500 text-white rounded-full h-10 w-10 flex items-center justify-center'>
                                         <h1 className='uppercase text-xl font-semibold text-white'>{userObj.name[0]}</h1>
                                     </div>
