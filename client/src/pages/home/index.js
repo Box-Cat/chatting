@@ -8,10 +8,10 @@ const Home = () => {
   const [searchKey, setSearchKey] = React.useState("");
   const {selectedChat} = useSelector((state)=>state.userReducer);
   return (
-    <div className="flex">
+    <div className="flex gap-5">
       
       {/* 1st part user search, userslist/chatlist */}
-      <div className='w-96 gap-5'>
+      <div className='w-96'>
         <UserSearch
           searchKey={searchKey}
           setSearchKey={setSearchKey}
